@@ -85,11 +85,11 @@
 												<thead>
 													<tr>
 														<th>Patient Name</th>
-														<th>Umr No.</th>
+														<th>UHID</th>
 														<th>IP number</th>
 														<th>Admission Date</th>
 														<th>Ward/Floor/Bed Cd</th>
-														<th>Doctor Name</th>
+														<th>Doctor/Unit Name</th>
 														<th>Action</th>
 													</tr>
 												</thead>
@@ -103,7 +103,7 @@
 											<div class="row">
 												<div class="col-lg-6">
 													<fieldset class="form-group">
-														<input type="text" id="searchTextActive" class="form-control" placeholder="Search Patient name,Umr No., IP Number and Doctor Name">
+														<input type="text" id="searchTextActive" class="form-control" placeholder="Search Patient name, UHID, IP Number and Doctor/Unit Name">
 													</fieldset>
 												</div>
 												<div class="col-lg-2">
@@ -198,11 +198,11 @@
 												<thead>
 													<tr>
 														<th>Patient Name</th>
-														<th>Umr No.</th>
+														<th>UHID</th>
 														<th>IP number</th>
 														<th>Admission Date</th>
 														<th>Ward/Floor/Bed Cd</th>
-														<th>Doctor Name</th>
+														<th>Doctor/Unit Name</th>
 														<th>Diet Type/Qty/Frequency</th>
 														<th>Co-morbities</th>
 														<th class="specialNotesbyNurising">Special Notes by Nurising</th>
@@ -219,7 +219,7 @@
 											<div class="row">
 												<div class="col-lg-6">
 													<fieldset class="form-group">
-														<input type="text" id="searchTextDischarged" class="form-control" placeholder="Search Patient name,Umr No., IP Number and Doctor Name">
+														<input type="text" id="searchTextDischarged" class="form-control" placeholder="Search Patient name, UHID, IP Number and Doctor/Unit Name">
 													</fieldset>
 												</div>
 												<div class="col-lg-2">
@@ -314,12 +314,12 @@
 												<thead>
 													<tr>
 														<th>Patient Name</th>
-														<th>Umr No.</th>
+														<th>UHID</th>
 														<th>IP number</th>
 														<th>Admission Date</th>
 														<th>Discharge Date</th>
 														<th>Ward/Floor/Bed Cd</th>
-														<th>Doctor Name</th>
+														<th>Doctor/Unit Name</th>
 														<th>Diet Type/Qty/Frequency</th>
 														<th>Co-morbities</th>
 														<th>Special Notes by Nurising</th>

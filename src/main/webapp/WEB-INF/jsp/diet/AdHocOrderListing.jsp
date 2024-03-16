@@ -75,7 +75,7 @@
 						<div class="row">
 							<div class="col-lg-2">
 								<fieldset class="form-group">
-									<input type="text" id="searchText" class="form-control" placeholder="Search Order ID, Patient name, IP Number, Doctor Name and Nursing name">
+									<input type="text" id="searchText" class="form-control" placeholder="Search Order ID, Patient name, IP Number and Doctor/Unit Name">
 								</fieldset>
 							</div>
 							<div class="col-lg-2">
@@ -238,8 +238,8 @@
 									<th>Total Rate</th>
 									<th>Remarks</th>
 									<th>Delivered?</th>
-									<th>Doctor Name</th>
-									<th>Nursing name</th>
+									<th>Doctor/Unit Name</th>
+<!-- 									<th>Nursing name</th> -->
 									<th>Order Placed on</th>
 									<th>Delivery Time</th>
 									<th>Status</th>
@@ -415,8 +415,6 @@
 		        }, {
 		            "data": "patient.doctor"
         		}, {
-		            "data": "patient.nursingName"
-		        }, {
         			"data": "createdOn",
         			"defaultContent": "-"
         		}, {

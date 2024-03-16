@@ -387,7 +387,7 @@ public class PatientDetailsServiceImpl implements PatientDetailsService {
 				savePatient.setModifiedUserHistoryId(0l);
 			}
 			save(savePatient);
-			return ResponseEntity.ok().body("{\"status\":\"sucess\"}");
+			return ResponseEntity.ok().body("{\"status\":\"success\"}");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -413,7 +413,7 @@ public class PatientDetailsServiceImpl implements PatientDetailsService {
 				savePatient.setModifiedUserHistoryId(0l);
 				savePatient = save(savePatient);
 				notificationsService.sendPatientTransferred(savePatient.getPatientId(), oldBedId);
-				return ResponseEntity.ok().body("{\"status\":\"sucess\"}");
+				return ResponseEntity.ok().body("{\"status\":\"success\"}");
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -443,7 +443,7 @@ public class PatientDetailsServiceImpl implements PatientDetailsService {
 				savePatient = save(savePatient);
 				dietPlanService.prepareDietPlan(List.of(savePatient), null, false);
 				notificationsService.sendPatientDischarge(savePatient.getPatientId());
-				return ResponseEntity.ok().body("{\"status\":\"sucess\"}");
+				return ResponseEntity.ok().body("{\"status\":\"success\"}");
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -228,7 +228,7 @@
       function format(d) {
     	    var returnStr = "No Record Found";
     	    if (Array.isArray(d.dietPlans)) {
-    	        returnStr = "<div class='card-body' style='padding: 5px 0px 0px 5px;'><table class='table table-bordered table-striped' style='width: auto;margin-left: 1%;'><thead><tr style='background: white;'><th>Service</th><th>Time</th><th>Diet Instruction</th><th>Item</th><th>Action</th><th>Paused?</th></thead></tr><tbody>";
+    	        returnStr = "<div class='card-body' style='padding: 5px 0px 0px 5px;'><table class='table table-bordered table-striped' style='width: auto;margin-left: 1%;'><thead><tr style='background: white;'><th>Service</th><th>Time</th><th>Diet Instruction</th><th>Item</th><th>Paused?</th></thead></tr><tbody>";
 
     	        for (let i = 0; i < d.dietPlans.length; i++) {
     	            returnStr += "<td>" + d.dietPlans[i].serviceMaster.service + "</td>";
@@ -247,14 +247,15 @@
     	            }
     	            returnStr += "</td>";
     	            if (d.dietPlans[i].serviceMaster.serviceItemsColumnName != null) {
-    	            	returnStr += "<td>" + '<input type="text" class="form-control" id="item_' + d.dietPlans[i].dietPlanId + '" value="' + (d.dietPlans[i].item == null ? "" : d.dietPlans[i].item) + '" size="70">' + "</td>";
-    	            	if (isDietitian || isAdmin) {
-    	            		returnStr += "<td>" + '<button type="submit" id="saveItem_' + d.dietPlans[i].dietPlanId +'" class="save-btn btn btn-success waves-effect waves-light btn-sm">Save</button>' + "</td>";
-    	            	} else {
-    	            		returnStr += "<td> - </td>";
-    	            	}
+        	            returnStr += "<td>" + (d.dietPlans[i].item == null ? "" : d.dietPlans[i].item) + "</td>";    	            	
+//     	            	returnStr += "<td>" + '<input type="text" class="form-control" id="item_' + d.dietPlans[i].dietPlanId + '" value="' + (d.dietPlans[i].item == null ? "" : d.dietPlans[i].item) + '" size="70">' + "</td>";
+//     	            	if (isDietitian || isAdmin) {
+//     	            		returnStr += "<td>" + '<button type="submit" id="saveItem_' + d.dietPlans[i].dietPlanId +'" class="save-btn btn btn-success waves-effect waves-light btn-sm">Save</button>' + "</td>";
+//     	            	} else {
+//     	            		returnStr += "<td> - </td>";
+//     	            	}
     	            } else {
-    	            	returnStr += "<td>" + "-" + "</td>";
+//     	            	returnStr += "<td>" + "-" + "</td>";
     	            	returnStr += "<td>" + "-" + "</td>";
     	            }
 	            	if (isDietitian || isAdmin) {

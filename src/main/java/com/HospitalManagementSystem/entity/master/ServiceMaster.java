@@ -80,6 +80,8 @@ public class ServiceMaster {
     @Enumerated(EnumType.STRING)
 	private YesNo clearLiquidsThroughTubeFeeding;
     
+    private String wingsCodes;
+    
     private Boolean isActive = Boolean.FALSE;
     
 	private String serviceItemsColumnName;

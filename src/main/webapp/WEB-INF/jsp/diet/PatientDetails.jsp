@@ -41,7 +41,7 @@
 									</div>
 									<div class="col-lg-4">
 										<fieldset class="form-group">
-											<label for="umrNumber">UMR No</label><span class="text-danger">*</span>
+											<label for="umrNumber">UHID</label><span class="text-danger">*</span>
 											<form:input cssClass="form-control" id="umrNumber" path="umrNumber" readonly="${patientDto.patientId ge 0}"></form:input>
 										</fieldset>
 									</div>
@@ -61,7 +61,7 @@
 									</div>
 									<div class="col-lg-4">
 										<fieldset class="form-group">
-											<label for="doctor">Doctor Name</label><span class="text-danger">*</span>
+											<label for="doctor">Doctor/Unit Name</label><span class="text-danger">*</span>
 											<form:input cssClass="form-control" id="doctor" path="doctor"></form:input>
 										</fieldset>
 									</div>
@@ -219,12 +219,12 @@
 											<label for="isVip">Is VIP</label><span class="text-danger">*</span>
 										</div>
 									</div>
-									<div class="col-lg-4">
-										<fieldset class="form-group">
-											<label for="nursingName">Nursing Name</label><span class="text-danger">*</span>
-											<form:input cssClass="form-control" id="nursingName" path="nursingName"></form:input>
-										</fieldset>
-									</div>
+<!-- 									<div class="col-lg-4"> -->
+<!-- 										<fieldset class="form-group"> -->
+<!-- 											<label for="nursingName">Nursing Name</label><span class="text-danger">*</span> -->
+<%-- 											<form:input cssClass="form-control" id="nursingName" path="nursingName"></form:input> --%>
+<!-- 										</fieldset> -->
+<!-- 									</div> -->
 									<div class="col-lg-4" style="display: none;">
 										<fieldset class="form-group">
 											<label for="employeeNo">Employee No</label><span class="text-danger">*</span>
@@ -356,6 +356,14 @@
 			        $("#dietSubType").attr("disabled", false);
 			        $("#quantity").attr("disabled", false);
 			        $("#frequency").attr("disabled", false);
+			        
+			        if ($("#quantity").val() == '') {
+			        	$("#quantity").val("40");
+			        }
+			        if ($("#frequency").val() == '') {
+			        	$("#frequency").val("2");
+			        }
+			        
 			        $("#dietSubType").val("");
 			        $(".dietSubType_options").each(function() {
 			            if ($(this).attr("data-dietTypeOralLiquidTF") == $("#dietTypeOralLiquidTF").val()) {
@@ -524,12 +532,6 @@
 		                maxlength: 150,
 		                alphanumericWithSpeCharValidator: true
 		            },
-		            nursingName: {
-		                required: true,
-		                minlength: 2,
-		                maxlength: 150,
-		                alphanumericWithSpeCharValidator: true
-		            },
 		            employeeNo: {
 		                required: false,
 		                minlength: 2,
@@ -553,10 +555,10 @@
 		                alphanumericWithSpeCharValidator: "Only Alphanumeric characters and " + allowsChars + " are allowed"
 		            },
 		            umrNumber: {
-		                required: "Please enter UMR No",
+		                required: "Please enter UHID",
 		                minlength: "At least 2 characters required",
 		                maxlength: "Max 50 characters allowed",
-		                numberRegex: "Please enter valid UMR No"
+		                numberRegex: "Please enter valid UHID"
 		            },
 		            ipNumber: {
 		                required: "Please enter IP number",
@@ -566,7 +568,7 @@
 		                remote: "IP number already in use"
 		            },
 		            doctor: {
-		                required: "Please enter Doctor Name",
+		                required: "Please enter Doctor/Unit Name",
 		                minlength: "At least 2 characters required",
 		                maxlength: "Max 150 characters allowed",
 		                alphanumericWithSpeCharValidator: "Only Alphanumeric characters and " + allowsChars + " are allowed"
@@ -597,12 +599,6 @@
 		            },
 		            othersSpecialNotesByNursing: {
 		                required: "Please enter Others Special Notes By Nursing",
-		                minlength: "At least 2 characters required",
-		                maxlength: "Max 150 characters allowed",
-		                alphanumericWithSpeCharValidator: "Only Alphanumeric characters and " + allowsChars + " are allowed"
-		            },
-		            nursingName: {
-		                required: "Please enter Nursing Name",
 		                minlength: "At least 2 characters required",
 		                maxlength: "Max 150 characters allowed",
 		                alphanumericWithSpeCharValidator: "Only Alphanumeric characters and " + allowsChars + " are allowed"

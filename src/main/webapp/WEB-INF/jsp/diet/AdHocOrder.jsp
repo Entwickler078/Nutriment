@@ -138,12 +138,12 @@
 											<input class="form-control daterange-single" id="remarks" name="remarks"></input>
 										</fieldset>
 									</div>
-									<div class="col-lg-4" id="dateSelection_div">
-										<fieldset class="form-group">
-											<label for="nursingName">Nursing Name</label><span class="text-danger">*</span>
-											<input class="form-control" id="nursingName" name="nursingName"></input>
-										</fieldset>
-									</div>
+<!-- 									<div class="col-lg-4" id="dateSelection_div"> -->
+<!-- 										<fieldset class="form-group"> -->
+<!-- 											<label for="nursingName">Nursing Name</label><span class="text-danger">*</span> -->
+<!-- 											<input class="form-control" id="nursingName" name="nursingName"></input> -->
+<!-- 										</fieldset> -->
+<!-- 									</div> -->
 								</div>
 								<c:if test="${patient.patientStatus ne 2}">
 									<c:if test="${isNursing || isDietitian || isAdmin}">
@@ -338,9 +338,9 @@
 	    		$("input[name=serviceType][value='2']").prop('checked', true);
 			</c:if> 		    
 		    serviceTypeChange();
-	    	<c:if test="${empty adHocOrderDto.adHocOrderId or adHocOrderDto.adHocOrderId eq 0}">
-    			$("#nursingName").val('${patient.nursingName}');
-			</c:if> 		    
+// 	    	<c:if test="${empty adHocOrderDto.adHocOrderId or adHocOrderDto.adHocOrderId eq 0}">
+//     			$("#nursingName").val('${patient.nursingName}');
+// 			</c:if> 		    
 
 		    $("#adHocOrderForm").validate({
 		        // in 'rules' user have to specify all the constraints for respective fields
@@ -358,12 +358,6 @@
 		                        return ($("#serviceSubType").val() == '5');
 		                    }
 		                },
-		                minlength: 2,
-		                maxlength: 150,
-		                alphanumericWithSpeCharValidator: true
-		            },
-		            nursingName: {
-		                required: true,
 		                minlength: 2,
 		                maxlength: 150,
 		                alphanumericWithSpeCharValidator: true
@@ -390,12 +384,6 @@
 		                minlength: "At least 2 characters required",
 		                maxlength: "Max 150 characters allowed",
 		                alphanumericWithSpeCharValidator: "Only Alphanumeric characters and " + allowsChars + " are allowed"
-		            },
-		            nursingName: {
-		                required: "Please enter Nursing Name",
-			            minlength: "At least 2 characters required",
-			            maxlength: "Max 150 characters allowed",
-			            alphanumericWithSpeCharValidator: "Only Alphanumeric characters and " + allowsChars + " are allowed"		                
 		            }
 		        },
 		        submitHandler: function(form) { // <- pass 'form' argument in

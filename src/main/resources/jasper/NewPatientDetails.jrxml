@@ -167,7 +167,7 @@
 								<textElement verticalAlignment="Middle" markup="styled">
 									<font size="10"/>
 								</textElement>
-								<text><![CDATA[Umr No]]></text>
+								<text><![CDATA[UHID]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20">
@@ -307,7 +307,7 @@
 								<textElement verticalAlignment="Middle" markup="styled">
 									<font size="10"/>
 								</textElement>
-								<text><![CDATA[Doctor Name]]></text>
+								<text><![CDATA[Doctor/Unit Name]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20">

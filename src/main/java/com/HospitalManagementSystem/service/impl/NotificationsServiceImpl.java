@@ -99,6 +99,7 @@ public class NotificationsServiceImpl implements NotificationsService {
 			params.put("$UpdatedFields", updatedFields);
 			params.put("$PatientName", patient.getPatientName());
 			params.put("$UpdatedDateTime", now.format(CommonUtility.localDateTimeFormatter));
+			params.put("$Username", currentUser.getUsername());
 			String templates = notificationsUtility.getTemplates(NotificationsUtility.UPDATE_PATIENT, params);
 			List<Notifications> notificationsList = new ArrayList<>();	
 			List<User> users = userRepository.findAllByIsActive(true);
@@ -126,6 +127,7 @@ public class NotificationsServiceImpl implements NotificationsService {
 		params.put("$BedCd", dietInstruction.getPatient().getBedString());
 		params.put("$Action", Objects.equals(dietInstruction.getCreatedOn(), dietInstruction.getModifiedOn()) ? "Updated" : "Added");
 		params.put("$DateTime", now.format(CommonUtility.localDateTimeFormatter));
+		params.put("$Username", currentUser.getUsername());
 		String templates = notificationsUtility.getTemplates(NotificationsUtility.DIET_INSTRUCTION, params);
 		List<Notifications> notificationsList = new ArrayList<>();	
 		List<User> users = userRepository.findAllByIsActive(true);
@@ -154,6 +156,7 @@ public class NotificationsServiceImpl implements NotificationsService {
 			params.put("$Action", adHocOrder.getOrderStatus() == 1 ? "Created" : adHocOrder.getOrderStatus() == 2 ? "Cancelled" : "Deleted ");
 			params.put("$PatientName", adHocOrder.getPatient().getPatientName());
 			params.put("$BedCd", adHocOrder.getPatient().getBedString());
+			params.put("$Username", currentUser.getUsername());
 			params.put("$ExpectedDeliveryTime", adHocOrder.getServiceDeliveryDateTime().format(CommonUtility.localDateTimeFormatter));
 			String templates = notificationsUtility.getTemplates(NotificationsUtility.ADHOC_ORDER, params);
 			List<Notifications> notificationsList = new ArrayList<>();	

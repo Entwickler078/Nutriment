@@ -11,7 +11,7 @@
 	<div class="col-sm-4">
 		<table class="table-sm">
 			<tr>
-				<td width="28%">UMR No</td>
+				<td width="28%">UHID</td>
 				<td width="2%">:</td>
 				<td width="70%">${patient.umrNumber}</td>
 			</tr>	
@@ -40,7 +40,7 @@
 	<div class="col-sm-4">
 		<table class="table-sm">
 			<tr>
-				<td width="28%">Doctor Name</td>
+				<td width="28%">Doctor/Unit Name</td>
 				<td width="2%">:</td>
 				<td width="70%">${patient.doctor}</td>
 			</tr>	

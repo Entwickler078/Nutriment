@@ -14,7 +14,7 @@
 <!-- v4.0.0 -->
 <link rel="stylesheet" href="${contextPath}/resources/dist/bootstrap/css/bootstrap.min.css">
 <!-- Favicon -->
-<link rel="icon" type="image/png" sizes="16x16" href="${contextPath}/resources/dist/img/favicon.ico">
+<%-- <link rel="icon" type="image/png" sizes="16x16" href="${contextPath}/resources/dist/img/favicon.ico"> --%>
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 <!-- Theme style -->
@@ -44,8 +44,8 @@
 	var isDietitian = ${isDietitian};
 	var isKitchen = ${isKitchen};
 	var isAdmin = ${isAdmin};
-	var	dietTypeSolid = ['1', '2', '3', '4', '5', '6', '7', '8'];
-	var	dietTypeLiquidOralTF = ['9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27'] ;
+	var	dietTypeSolid = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+	var	dietTypeLiquidOralTF = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'] ;
 	var alphanumericWithSpeChar = new RegExp('^[a-zA-Z0-9.,\-\/"& ]*$');
 	var allowsChars = '.,-/"&'
 	var setIntervalTime = 1000 * 60 * 3;

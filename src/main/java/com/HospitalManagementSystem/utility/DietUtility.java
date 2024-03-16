@@ -124,7 +124,7 @@ public class DietUtility {
 			if (ObjectUtils.isNotEmpty(predicateDietSubTypeFinal)) {
 				finalPredicates.add(predicateDietSubTypeFinal);
 			}	
-			return criteriaBuilder.and(criteriaBuilder.equal(root.get("isActive"), Boolean.TRUE), criteriaBuilder.or(finalPredicates.toArray(new Predicate[0])));
+			return criteriaBuilder.and(criteriaBuilder.equal(root.get("isActive"), Boolean.TRUE), criteriaBuilder.like(root.get("wingsCodes"), "%" + patient.getBed().getWingsCode() + "%"), criteriaBuilder.or(finalPredicates.toArray(new Predicate[0])));
 		};
 		return specification;
 	}
@@ -134,12 +134,18 @@ public class DietUtility {
 		List<ServiceItems> ServiceItemsList = serviceItemsRepository.findAllByIsActive(true);
 		if (CollectionUtils.isNotEmpty(ServiceItemsList)) {
 			for (ServiceItems serviceItems : ServiceItemsList) {
+				if (serviceItems.getS_10amExtraLiq() == YesNo.YES) {
+					addIntoMap(serviceItems, serviceItemsMap, "s_10amExtraLiq", getSubKeys(serviceItems));
+				}
 				if (serviceItems.getS_2pmExtraLiq() == YesNo.YES) {
 					addIntoMap(serviceItems, serviceItemsMap, "s_2pmExtraLiq", getSubKeys(serviceItems));
 				}
 				if (serviceItems.getS_6pmExtraLiq() == YesNo.YES) {
 					addIntoMap(serviceItems, serviceItemsMap, "s_6pmExtraLiq", getSubKeys(serviceItems));
 				}
+				if (serviceItems.getS_10pmExtraLiq() == YesNo.YES) {
+					addIntoMap(serviceItems, serviceItemsMap, "s_10pmExtraLiq", getSubKeys(serviceItems));
+				}				
 				if (serviceItems.getS_6am() == YesNo.YES) {
 					addIntoMap(serviceItems, serviceItemsMap, "s_6am", getSubKeys(serviceItems));
 				}

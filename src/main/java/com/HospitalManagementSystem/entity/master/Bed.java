@@ -34,6 +34,8 @@ public class Bed {
 	@JoinColumn(name = "floor_id")
 	private Floor floor;
 	
+	private String wingsCode;
+	
 	private Boolean isActive = Boolean.FALSE;
 	
 	@Getter(lombok.AccessLevel.NONE)

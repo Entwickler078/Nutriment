@@ -67,9 +67,9 @@ public class StickersServiceImpl implements StickersService {
 	private static final String BACKSLASH = " / ";
 	private static final String PIPE = " | ";
 	private static final String BRTAG = "<br/>";
-	private static final List<Long> dietTypeSolid = List.of(1l, 2l, 3l, 5l, 7l, 8l);
-	private static final List<Long> extraLiquid = List.of(4l, 6l);
-	private static final List<Long> dietTypeLiquidOralTF = List.of(9l, 10l, 11l, 12l, 13l, 14l, 15l, 16l, 17l, 18l, 19l, 20l, 21l, 22l, 23l, 24l, 25l, 26l, 27l) ;
+	private static final List<Long> dietTypeSolid = List.of(1l, 2l, 4l, 5l, 7l, 9l, 10l);
+	private static final List<Long> extraLiquid = List.of(3l, 6l, 8l, 11l);
+	private static final List<Long> dietTypeLiquidOralTF = List.of(12l, 13l, 14l, 15l, 16l, 17l, 18l, 19l, 20l, 21l, 22l, 23l, 24l, 25l, 26l, 27l, 28l, 29l, 30l) ;
 	
 	@Override
 	public String stickers(Model model, Long patientId) {

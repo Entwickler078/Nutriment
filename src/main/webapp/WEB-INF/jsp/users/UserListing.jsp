@@ -34,7 +34,7 @@
                   <div class="card-body">
                      <div class="table-responsive">
                         <table id="user-table" class="table table-bordered table-striped">
-                           <thead style="background-color: #3dc9df!important;">
+                           <thead>
                               <tr>
                                  <th>Name</th>
                                  <th>Designation</th>

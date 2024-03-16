@@ -2,9 +2,11 @@
 	<!-- Logo --> 
 	<a href="#" class="logo blue-bg">
 		<!-- mini logo for sidebar mini 50x50 pixels --> 
-		<span class="logo-mini"><img src="${contextPath}/resources/dist/img/favicon.ico" alt=""></span> 
+<%-- 		<span class="logo-mini"><img src="${contextPath}/resources/dist/img/favicon.ico" alt=""></span>  --%>
 		<!-- logo for regular state and mobile devices --> 
-		<span class="logo-lg"><img height="30px" width="162px" src="${contextPath}/resources/dist/img/kd-logo.png" alt=""></span> 
+		<span class="logo-lg">
+<%-- 		<img height="30px" width="162px" src="${contextPath}/resources/dist/img/kd-logo.png" alt=""> --%>
+		</span> 
 	</a>
 	<!-- Header Navbar -->
 	<nav class="navbar blue-bg navbar-static-top">

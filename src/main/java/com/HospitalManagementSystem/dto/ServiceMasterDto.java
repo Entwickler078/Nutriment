@@ -40,6 +40,8 @@ public class ServiceMasterDto {
 	private YesNo jjFeeding;
 
 	private YesNo clearLiquidsThroughTubeFeeding;
+	
+	private String wingsCodes;
 
 	private Boolean isActive = Boolean.FALSE;
 

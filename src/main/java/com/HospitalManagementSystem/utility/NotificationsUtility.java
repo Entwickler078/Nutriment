@@ -16,12 +16,11 @@ import com.HospitalManagementSystem.entity.User;
 public class NotificationsUtility {
 
 	public static final String ADD_PATIENT = "Diet of the $PatientName, $BedCd is added";
-	public static final String UPDATE_PATIENT = "Diet Details ($UpdatedFields) for the $PatientName is updated on $UpdatedDateTime";
-	public static final String DIET_INSTRUCTION = "Diet Instruction for $Services against $PatientName, $BedCd is $Action on $DateTime";
-	public static final String ADHOC_ORDER = "$ServiceType order is $Action for $PatientName, $BedCd with expected delivery on $ExpectedDeliveryTime";
+	public static final String UPDATE_PATIENT = "Diet Details ($UpdatedFields) for the $PatientName is updated on $UpdatedDateTime By $Username";
+	public static final String DIET_INSTRUCTION = "Diet Instruction for $Services against $PatientName, $BedCd is $Action on $DateTime By $Username";
+	public static final String ADHOC_ORDER = "$ServiceType order is $Action for $PatientName, $BedCd with expected delivery on $ExpectedDeliveryTime By $Username";
 	public static final String PATIENT_DISCHARGE = "$PatientName, $BedCd got discharged on $DischargedTime";
 	public static final String PATIENT_TRANSFERRED = "$PatientName got Transferred from $BedCd to $UpdatedBedCd on $TransferredDateTime";
-	
 	
 	public String getTemplates(String templates, Map<String, String> params) {
 		for (String key : params.keySet()) {
@@ -56,29 +55,29 @@ public class NotificationsUtility {
 		}
 		if (!newPatient.getNbm()) {
 			if (dietTypeOralSolidChange) {
-				updatedFields += "Diet Type- Oral Solid: " + (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralSolid()) ? newPatient.getDietTypeOralSolid().getValue(): "") + "/" + (ObjectUtils.isNotEmpty(oldPatient.getDietTypeOralSolid()) ? oldPatient.getDietTypeOralSolid().getValue() : "") + ", ";
+				updatedFields += "Diet Type- Oral Solid: " + (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralSolid()) ? newPatient.getDietTypeOralSolid().getValue(): "") + "|" + (ObjectUtils.isNotEmpty(oldPatient.getDietTypeOralSolid()) ? oldPatient.getDietTypeOralSolid().getValue() : "") + ", ";
 			}
 			if (extraLiquidChange) {
 				updatedFields += "Extra Liquid: " + (newPatient.getExtraLiquid() ? "Yes" : "No") + ", ";
 			}
 			if (!Objects.equals(ObjectUtils.isNotEmpty(oldPatient.getDietTypeOralLiquidTF()) && ObjectUtils.isNotEmpty(oldPatient.getDietTypeOralLiquidTF().getDietTypeOralLiquidTFId()) ? oldPatient.getDietTypeOralLiquidTF().getDietTypeOralLiquidTFId() : 0l,
 					ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF()) && ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF().getDietTypeOralLiquidTFId()) ? newPatient.getDietTypeOralLiquidTF().getDietTypeOralLiquidTFId() : 0l)) {
-				updatedFields += "Diet Type- Oral Liquid/TF: " + (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF())? newPatient.getDietTypeOralLiquidTF().getValue() : "") + "/" + (ObjectUtils.isNotEmpty(oldPatient.getDietTypeOralLiquidTF()) ? oldPatient.getDietTypeOralLiquidTF().getValue() : "") + ", ";
+				updatedFields += "Diet Type- Oral Liquid/TF: " + (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF())? newPatient.getDietTypeOralLiquidTF().getValue() : "") + "|" + (ObjectUtils.isNotEmpty(oldPatient.getDietTypeOralLiquidTF()) ? oldPatient.getDietTypeOralLiquidTF().getValue() : "") + ", ";
 			}
 			if (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF()) && dietSubTypeChange) {
-				updatedFields += "Diet Sub Type: " + (ObjectUtils.isNotEmpty(newPatient.getDietSubType()) ? newPatient.getDietSubType().getValue() : "") + "/" + (ObjectUtils.isNotEmpty(oldPatient.getDietSubType()) ? oldPatient.getDietSubType().getValue() : "") + ", ";
+				updatedFields += "Diet Sub Type: " + (ObjectUtils.isNotEmpty(newPatient.getDietSubType()) ? newPatient.getDietSubType().getValue() : "") + "|" + (ObjectUtils.isNotEmpty(oldPatient.getDietSubType()) ? oldPatient.getDietSubType().getValue() : "") + ", ";
 			}
 			if (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF()) && 
 				!Objects.equals(ObjectUtils.isNotEmpty(oldPatient.getQuantity()) && ObjectUtils.isNotEmpty(oldPatient.getQuantity().getQuantityId()) ? oldPatient.getQuantity().getQuantityId() : 0l,
 					ObjectUtils.isNotEmpty(newPatient.getQuantity()) && ObjectUtils.isNotEmpty(newPatient.getQuantity().getQuantityId()) ? newPatient.getQuantity().getQuantityId() : 0l)) {
-				updatedFields += "Quantity: " + (ObjectUtils.isNotEmpty(newPatient.getQuantity()) ? newPatient.getQuantity().getValueStr() : "") + "/" + (ObjectUtils.isNotEmpty(oldPatient.getQuantity()) ? oldPatient.getQuantity().getValueStr() : "") + ", ";
+				updatedFields += "Quantity: " + (ObjectUtils.isNotEmpty(newPatient.getQuantity()) ? newPatient.getQuantity().getValueStr() : "") + "|" + (ObjectUtils.isNotEmpty(oldPatient.getQuantity()) ? oldPatient.getQuantity().getValueStr() : "") + ", ";
 			}
 			if (ObjectUtils.isNotEmpty(newPatient.getDietTypeOralLiquidTF()) && frequencyChange) {
-				updatedFields += "Frequency: " + (ObjectUtils.isNotEmpty(newPatient.getFrequency()) ? newPatient.getFrequency().getValueStr() : "") + "/" + (ObjectUtils.isNotEmpty(oldPatient.getFrequency()) ? oldPatient.getFrequency().getValueStr() : "") + ", ";
+				updatedFields += "Frequency: " + (ObjectUtils.isNotEmpty(newPatient.getFrequency()) ? newPatient.getFrequency().getValueStr() : "") + "|" + (ObjectUtils.isNotEmpty(oldPatient.getFrequency()) ? oldPatient.getFrequency().getValueStr() : "") + ", ";
 			}
 		}
 		if (!StringUtils.equalsAnyIgnoreCase(oldPatient.getMedicalComorbiditiesString(), newPatient.getMedicalComorbiditiesString())) {
-			updatedFields += "Medical Co-morbidities: " + newPatient.getMedicalComorbiditiesString() + "/" + oldPatient.getMedicalComorbiditiesString() + ", ";
+			updatedFields += "Medical Co-morbidities: " + newPatient.getMedicalComorbiditiesString() + "|" + oldPatient.getMedicalComorbiditiesString() + ", ";
 		}
 		if (!StringUtils.equalsAnyIgnoreCase(oldPatient.getDiagonosisIds(), newPatient.getDiagonosisIds())) {
 			updatedFields += "Diagonosis" + ", ";
@@ -87,7 +86,7 @@ public class NotificationsUtility {
 			updatedFields += "Is VIP: " + (newPatient.getIsVip() ? "Yes" : "No") + ", ";
 		}
 		if (!StringUtils.equalsAnyIgnoreCase(oldPatient.getNursingName(), newPatient.getNursingName())) {
-			updatedFields += "Nursing Name: " + newPatient.getNursingName() + "/" + oldPatient.getNursingName() + ", ";
+			updatedFields += "Nursing Name: " + newPatient.getNursingName() + "|" + oldPatient.getNursingName() + ", ";
 		}
 		updatedFields = StringUtils.removeEnd(updatedFields, ", ");
 		return updatedFields;

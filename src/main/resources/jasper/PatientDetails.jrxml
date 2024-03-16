@@ -260,7 +260,7 @@
 								<textElement verticalAlignment="Middle" markup="styled">
 									<font size="10"/>
 								</textElement>
-								<textFieldExpression><![CDATA["Doctor Name"]]></textFieldExpression>
+								<textFieldExpression><![CDATA["Doctor/Unit Name"]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell height="20">

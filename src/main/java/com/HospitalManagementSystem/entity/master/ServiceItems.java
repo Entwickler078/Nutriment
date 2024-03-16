@@ -31,13 +31,20 @@ public class ServiceItems implements Serializable {
 	private Long serviceItemsId;
 
 	private String itemName;
-
+	
+	
+	@Column(columnDefinition = "ENUM('YES', 'NO')")
+	@Enumerated(EnumType.STRING)
+	private YesNo s_10amExtraLiq;
 	@Column(columnDefinition = "ENUM('YES', 'NO')")
 	@Enumerated(EnumType.STRING)
 	private YesNo s_2pmExtraLiq;
 	@Column(columnDefinition = "ENUM('YES', 'NO')")
 	@Enumerated(EnumType.STRING)
 	private YesNo s_6pmExtraLiq;
+	@Column(columnDefinition = "ENUM('YES', 'NO')")
+	@Enumerated(EnumType.STRING)
+	private YesNo s_10pmExtraLiq;
 
 	@Column(columnDefinition = "ENUM('YES', 'NO')")
 	@Enumerated(EnumType.STRING)

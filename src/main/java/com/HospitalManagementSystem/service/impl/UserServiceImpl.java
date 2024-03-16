@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
 			if (user.get().getPasswordResetType() == 1) {
 				homePageUrl = "redirect:/change-password";
 			} else {
-				homePageUrl = "redirect:/dashboard";
+				homePageUrl = "redirect:/diet/patients";
 			}
 		}
 		return homePageUrl;
