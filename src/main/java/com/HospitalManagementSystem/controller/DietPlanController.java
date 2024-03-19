@@ -237,8 +237,10 @@ public class DietPlanController {
 	}
 	
 	@GetMapping("/generate-stickers")
-	public ResponseEntity<Resource> generateStickers(@RequestParam("serviceMasterId") Long serviceMasterId, @RequestParam(name = "patientId", required = false) Long patientId) {
-		return stickersService.generateStickers(serviceMasterId, patientId);
+	public ResponseEntity<Resource> generateStickers(@RequestParam("dateSelection") String dateSelection,
+			@RequestParam("serviceMasterId") Long serviceMasterId,
+			@RequestParam(name = "patientId", required = false) Long patientId) {
+		return stickersService.generateStickers(dateSelection, serviceMasterId, patientId);
 	}
 	
 	@GetMapping("/generate-adhoc-stickers")

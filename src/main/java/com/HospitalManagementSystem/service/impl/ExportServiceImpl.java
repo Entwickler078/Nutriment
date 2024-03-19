@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -19,17 +18,18 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import com.HospitalManagementSystem.dto.AdHocOrderDto;
 import com.HospitalManagementSystem.dto.AdHocSearchDto;
 import com.HospitalManagementSystem.dto.PatientDataTablesOutputDto;
 import com.HospitalManagementSystem.dto.PatientSearchDto;
 import com.HospitalManagementSystem.dto.PatientServiceReportDto;
+import com.HospitalManagementSystem.dto.StickerServiceComorbidityReportDto;
+import com.HospitalManagementSystem.dto.StickerServiceReportDto;
 import com.HospitalManagementSystem.entity.AdHocOrder;
 import com.HospitalManagementSystem.entity.AdHocOrderItems;
 import com.HospitalManagementSystem.entity.Patient;
+import com.HospitalManagementSystem.entity.master.ServiceMaster;
 import com.HospitalManagementSystem.repository.AdHocOrderRepository;
 import com.HospitalManagementSystem.service.AdHocOrderService;
 import com.HospitalManagementSystem.service.ExportService;
@@ -256,6 +256,69 @@ public class ExportServiceImpl implements ExportService {
 				JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 				jasperPrints.add(jasperPrint);
 				
+				return getByteArrayResource(reportName, type, jasperPrints, parameters);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<ByteArrayResource> stickerServiceReportExport(Model model, String type, String dateSelection, Long serviceMasterId) {
+		reportService.stickerServiceReport(model, dateSelection, serviceMasterId);
+		List<StickerServiceReportDto> stickerServiceReportList = ObjectUtils.isNotEmpty(model.getAttribute("stickerServiceReportList")) ? (List<StickerServiceReportDto>) model.getAttribute("stickerServiceReportList") : new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(stickerServiceReportList)) {
+			try {
+				String reportName = "Sticker Service Report";
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put("reportName", reportName);
+				parameters.put("localDateTimeFormatter", CommonUtility.localDateTimeFormatter);
+				parameters.put("printedOn", LocalDateTime.now().format(CommonUtility.localDateTimeFormatter));
+				parameters.put("tableData", new JRBeanCollectionDataSource(stickerServiceReportList));
+
+				parameters.put("dateSelection", dateSelection);
+				parameters.put("serviceMasterName", ((ServiceMaster) model.getAttribute("serviceMaster")).getService());
+
+				InputStream jasperInput = ExportServiceImpl.class.getResourceAsStream("/" + "jasper/StickerServiceReport.jrxml");
+				JasperDesign jasperDesign = JRXmlLoader.load(jasperInput);
+				JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+				List<JasperPrint> jasperPrints = new ArrayList<JasperPrint>();
+				JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+				jasperPrints.add(jasperPrint);
+
+				return getByteArrayResource(reportName, type, jasperPrints, parameters);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<ByteArrayResource> stickerServiceComorbidityReportExport(Model model, String type, String dateSelection, Long serviceMasterId, String itemName) {
+		reportService.stickerServiceComorbidityReport(model, dateSelection, serviceMasterId, itemName);
+		List<StickerServiceComorbidityReportDto> stickerServiceComorbidityReportList = ObjectUtils.isNotEmpty(model.getAttribute("stickerServiceComorbidityReportList")) ? (List<StickerServiceComorbidityReportDto>) model.getAttribute("stickerServiceComorbidityReportList") : new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(stickerServiceComorbidityReportList)) {
+			try {
+				String reportName = "Sticker Service Comorbidity Report";
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put("reportName", reportName);
+				parameters.put("localDateTimeFormatter", CommonUtility.localDateTimeFormatter);
+				parameters.put("printedOn", LocalDateTime.now().format(CommonUtility.localDateTimeFormatter));
+				parameters.put("tableData", new JRBeanCollectionDataSource(stickerServiceComorbidityReportList));
+
+				parameters.put("dateSelection", dateSelection);
+				parameters.put("serviceMasterName", ((ServiceMaster) model.getAttribute("serviceMaster")).getService());
+				parameters.put("itemName", itemName);
+
+				InputStream jasperInput = ExportServiceImpl.class.getResourceAsStream("/" + "jasper/StickerServiceComorbidityReport.jrxml");
+				JasperDesign jasperDesign = JRXmlLoader.load(jasperInput);
+				JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+				List<JasperPrint> jasperPrints = new ArrayList<JasperPrint>();
+				JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+				jasperPrints.add(jasperPrint);
+
 				return getByteArrayResource(reportName, type, jasperPrints, parameters);
 			} catch (Exception e) {
 				e.printStackTrace();

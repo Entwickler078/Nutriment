@@ -81,6 +81,7 @@ public class StickersServiceImpl implements StickersService {
 			model.addAttribute("localDateFormatter", CommonUtility.localDateFormatter);
 			model.addAttribute("localDateTimeFormatter", CommonUtility.localDateTimeFormatter);
 		} else {
+			model.addAttribute("localDateFormatter", CommonUtility.localDateFormatter);
 			model.addAttribute("serviceMasterList", serviceMasterRepository.findAllByIsActive(Boolean.TRUE));
 		}
 		return "diet/Stickers";
@@ -124,11 +125,14 @@ public class StickersServiceImpl implements StickersService {
 	}
 	
 	@Override
-	public ResponseEntity<Resource> generateStickers(Long serviceMasterId, Long patientId) {
+	public ResponseEntity<Resource> generateStickers(String dateSelection, Long serviceMasterId, Long patientId) {
 		try {
 			List<String> stickersList = new ArrayList<String>(); 
 			List<DietPlan> dietPlanList = new ArrayList<>();
-			LocalDate stickersDate = serviceMasterId == 27l ? LocalDate.now().plusDays(1) : LocalDate.now();
+			LocalDate stickersDate = LocalDate.now();
+			if (StringUtils.isNotEmpty(dateSelection)) {
+				stickersDate = LocalDate.parse(dateSelection, CommonUtility.localDateFormatter);
+			}
 			if (ObjectUtils.isEmpty(patientId)) {
 				dietPlanList = dietPlanRepository.findAllByServiceMasterServiceMasterIdAndDietDate(serviceMasterId, LocalDate.now());
 			} else {
@@ -222,6 +226,11 @@ public class StickersServiceImpl implements StickersService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isDietTypeLiquidOralTF(Long serviceMasterId) {
+		return dietTypeLiquidOralTF.contains(serviceMasterId);
 	}
 
 }

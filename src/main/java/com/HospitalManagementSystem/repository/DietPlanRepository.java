@@ -37,6 +37,8 @@ public interface DietPlanRepository extends JpaRepository<DietPlan, Long>, JpaSp
 	List<DietPlan> findAllByDietDate(LocalDate date);
 
 	List<DietPlan> findAllByServiceMasterServiceMasterIdAndDietDate(Long serviceMasterId, LocalDate now);
+	
+	List<DietPlan> findAllByServiceMasterServiceMasterIdAndDietDateAndItem(Long serviceMasterId, LocalDate now, String item);
 
 	List<DietPlan> findAllByServiceMasterServiceMasterIdAndPatientPatientIdAndDietDate(Long serviceMasterId, Long patientId, LocalDate dietDate);
 	

@@ -66,6 +66,29 @@ public class ReportServiceUtility {
 			+ "GROUP BY diagonosis.value \r\n"
 			+ "ORDER BY diagonosis.diagonosis_id ASC";
 	
+	public static final String STICKER_SERVICE_REPORT_1 = "SELECT dietTypeOralLiquidTF.value AS DietType,\r\n"
+			+ "dietSubType.value AS DietSubType,\r\n"
+			+ "dietPlan.item AS ItemName,\r\n"
+			+ "COUNT(dietPlan.diet_plan_id) AS Total\r\n"
+			+ "FROM `diet_plan` dietPlan\r\n"
+			+ "INNER JOIN `patient` patient ON patient.patient_id = dietPlan.patient_id\r\n"
+			+ "INNER JOIN `diet_sub_type` dietSubType ON dietSubType.diet_sub_type_id = patient.diet_sub_type_id\r\n"
+			+ "INNER JOIN `diet_type_oral_liquid_tf` dietTypeOralLiquidTF ON dietTypeOralLiquidTF.diet_type_oral_liquidtfid = patient.diet_type_oral_liquid_tf_id\r\n"
+			+ "WHERE dietPlan.diet_date = :dateSelection AND dietPlan.service_master_id = :serviceMasterId AND dietPlan.is_paused = FALSE\r\n"
+			+ "GROUP BY dietTypeOralLiquidTF.value,dietSubType.value,dietPlan.item\r\n"
+			+ "ORDER BY dietTypeOralLiquidTF.diet_type_oral_liquidtfid ASC,dietSubType.diet_sub_type_id ASC ";
+	
+	public static final String STICKER_SERVICE_REPORT_2 = "SELECT dietTypeOralSolid.value AS DietType,\r\n"
+			+ "'' AS DietSubType,\r\n"
+			+ "'' AS ItemName,\r\n"
+			+ "COUNT(dietPlan.diet_plan_id) AS Total\r\n"
+			+ "FROM `diet_plan` dietPlan\r\n"
+			+ "INNER JOIN `patient` patient ON patient.patient_id = dietPlan.patient_id\r\n"
+			+ "INNER JOIN`diet_type_oral_solid` dietTypeOralSolid ON dietTypeOralSolid.diet_type_oral_solid_id = patient.diet_type_oral_solid_id\r\n"
+			+ "WHERE dietPlan.diet_date = :dateSelection AND dietPlan.service_master_id = :serviceMasterId AND dietPlan.is_paused = FALSE\r\n"
+			+ "GROUP BY dietTypeOralSolid.value\r\n"
+			+ "ORDER BY dietTypeOralSolid.diet_type_oral_solid_id ASC ";	
+	
 	public static String getString(Object obj) {
 		return ObjectUtils.isNotEmpty(obj) ? String.valueOf(obj) : "";
 	}

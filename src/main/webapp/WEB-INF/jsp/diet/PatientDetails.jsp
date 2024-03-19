@@ -171,7 +171,7 @@
 									<div class="col-lg-4">
 										<fieldset class="form-group">
 											<label for="medicalComorbidities">Medical Co-morbidities</label><span class="text-danger">*</span>
-											<select class="form-control selectpicker" id="medicalComorbidities" name="medicalComorbiditiesIds" multiple data-live-search="true" data-size="10" title="Please select">
+											<select class="form-control selectpicker" id="medicalComorbidities" name="medicalComorbiditiesIds" onchange="medicalComorbiditiesChange();" multiple data-live-search="true" data-size="10" title="Please select">
 												<c:forEach items="${medicalComorbiditiesList}" var="medicalComorbidities">
 													<option value="${medicalComorbidities.medicalComorbiditiesId}">${medicalComorbidities.value}</option>
 												</c:forEach>
@@ -393,6 +393,26 @@
 		    $('#floorName').val($('#bed').find(":selected").attr("data-floorName"));
 		    $('#wardName').val($('#bed').find(":selected").attr("data-wardName"));
 		}
+		
+		function medicalComorbiditiesChange() {
+		    if ($("#medicalComorbidities").val().includes('1')) {
+		    	 $('#medicalComorbidities').find('option[value="1"]').prop('disabled', false);
+		    	 $('#medicalComorbidities').find('option[value="2"]').prop('disabled', true);
+		    	 $('#medicalComorbidities').find('option[value="3"]').prop('disabled', true);
+		    	 $('#medicalComorbidities').find('option[value="4"]').prop('disabled', true);
+		    } else if ($("#medicalComorbidities").val().includes('2')|| $("#medicalComorbidities").val().includes('3') || $("#medicalComorbidities").val().includes('4')) {
+		    	 $('#medicalComorbidities').find('option[value="1"]').prop('disabled', true);
+		    	 $('#medicalComorbidities').find('option[value="2"]').prop('disabled', false);
+		    	 $('#medicalComorbidities').find('option[value="3"]').prop('disabled', false);
+		    	 $('#medicalComorbidities').find('option[value="4"]').prop('disabled', false);
+		    } else {
+		    	 $('#medicalComorbidities').find('option[value="1"]').prop('disabled', false);
+		    	 $('#medicalComorbidities').find('option[value="2"]').prop('disabled', false);
+		    	 $('#medicalComorbidities').find('option[value="3"]').prop('disabled', false);
+		    	 $('#medicalComorbidities').find('option[value="4"]').prop('disabled', false);
+		    }			
+			$('.selectpicker').selectpicker('refresh');
+		}
 
 		function Validation() {
 			 $("#extraLiquid").attr("disabled", false);
@@ -433,6 +453,7 @@
 		    extraLiquidChange();
 		    dietTypeOralLiquidTFChange();
 		    specialNotesByNursingChange();
+		    medicalComorbiditiesChange();
 		    <c:if test="${not empty patientDto.dietSubType.dietSubTypeId}">
 		   		$("#dietSubType").val("${patientDto.dietSubType.dietSubTypeId}"); 
 		   	 	$('.selectpicker').selectpicker('refresh');

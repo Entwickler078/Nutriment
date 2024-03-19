@@ -43,8 +43,17 @@
 							</c:if>
 							<form  action="${contextPath}/diet/generate-stickers" method="GET" onsubmit="return Validation();" id="stickersForm" target="_blank">
 								<input type="hidden" name="patientId" value="${patientId}"/>
+								<input type="hidden" id="dateSelectionStr" value="${dateSelection}"></input>
+								<input type="hidden" id="serviceMasterIdStr" value="${serviceMasterId}"></input>
+								<input type="hidden" name="type" id="type"></input>
 								<div class="row">
 									<c:if test="${empty patientId}">
+									<div class="col-lg-2">
+										<fieldset class="form-group">
+											<label for="medicalComorbidities">Date</label><span class="text-danger">*</span>
+											<input type="text" class="form-control daterange-single" id="dateSelection" name="dateSelection" placeholder="Date"></input>
+										</fieldset>
+									</div>										
 									<div class="col-lg-4">
 										<fieldset class="form-group">
 											<label for="dietType">Diet Type</label><span class="text-danger">*</span>
@@ -66,11 +75,50 @@
 										</fieldset>
 									</div>
 								</div>
-								<button type="submit" class="btn btn-success waves-effect waves-light">Generate Stickers</button>								
+								<button type="submit" class="btn btn-success waves-effect waves-light" onclick="changeAction('1')">Generate Stickers</button>
+								<button type="submit" class="btn btn-success waves-effect waves-light" onclick="changeAction('2')">Generate Report</button>
+								<button type="submit" class="btn btn-outline-primary" onclick="changeAction('3')"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;PDF</button>								
 							</form>
 						</div>
-					</div>				
-				</div>
+					</div>
+					<c:if test="${reportGenerated eq true}">
+						<div class="card">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table id="" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>Sr No</th>
+												<th>Diet Type</th>
+												<c:if test="${showItemName eq true}"><th>Diet Sub Type</th></c:if>
+												<c:if test="${showItemName eq true}"><th>Item Name</th></c:if>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:if test="${not empty stickerServiceReportList}">
+												<c:forEach items="${stickerServiceReportList}" var="stickerServiceReport" varStatus="loop">
+													<tr>
+														<td>${loop.index + 1}</td>
+														<td>${stickerServiceReport.dietType}</td>
+														<c:if test="${showItemName eq true}"><td>${stickerServiceReport.dietSubType}</td></c:if>
+														<c:if test="${showItemName eq true}"><td>${stickerServiceReport.itemName}</td></c:if>
+														<td><a href="${contextPath}/reports/sticker-service-comorbidity-report?dateSelection=${dateSelection}&serviceMasterId=${serviceMasterId}&itemName=${stickerServiceReport.itemName}" target="_blank">${stickerServiceReport.total}</a></td>
+													</tr>
+												</c:forEach>
+											</c:if>
+											<c:if test="${empty stickerServiceReportList}">
+												<tr>
+													<td colspan="${showItemName eq true ? '5' : '3'}">No Data Found</td>
+												</tr>
+											</c:if>											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</c:if>
+			</div>
 				<!-- /.content --> 
 			</div>
 			<!-- /.content-wrapper -->
@@ -104,15 +152,58 @@
 		}		
 		
 		function Validation() {}
+		
+		function changeAction(value) {
+			if (value == '1') {
+				$("#stickersForm").attr("method", "GET");
+	    		$("#stickersForm").attr("action", "${contextPath}/diet/generate-stickers");
+	    		$("#stickersForm").attr("target", "_blank");
+	    	} else if (value == '2') {
+	    		$("#stickersForm").attr("method", "POST");
+	    		$("#stickersForm").attr("action", "${contextPath}/reports/sticker-service-report");
+	    		$("#stickersForm").attr("target", "");
+	    	} else if (value == '3') {
+	    		$("#stickersForm").attr("method", "POST");
+	    		$("#stickersForm").attr("action", "${contextPath}/reports/sticker-service-report-export");
+	    		$("#stickersForm").attr("target", "_blank");
+	    		$("#type").val("PDF");
+	    	} 
+		}
+		
+	    $('#dateSelection').daterangepicker({
+	        alwaysShowCalendars: true,
+	        singleDatePicker: true,
+	        locale: {
+	            format: 'DD/MM/YYYY'
+	        }
+	    });
 
 		$(document).ready(function() {
 		    $("#Stickers").addClass("active");
 		    $('.selectpicker').selectpicker(); 
-		    dietTypeChange();
-
+		    
+		    if ($('#dateSelectionStr').val() != "") {
+		        $('#dateSelection').data('daterangepicker').setStartDate($('#dateSelectionStr').val());
+		    }
+		    if ($('#serviceMasterIdStr').val() != "") {
+		    	if (dietTypeSolid.includes($('#serviceMasterIdStr').val())) {
+		    		$("#dietType").val("1");
+		    	} else if (dietTypeLiquidOralTF.includes($('#serviceMasterIdStr').val())) {
+		    		$("#dietType").val("2");
+		    	}
+		    	dietTypeChange();
+		        $('#serviceMasters').val($('#serviceMasterIdStr').val());
+		    } else {
+		    	dietTypeChange();
+		    }
+		    $('.selectpicker').selectpicker('refresh');
+		    	
 		    $("#stickersForm").validate({
 		        // in 'rules' user have to specify all the constraints for respective fields
 		        rules: {
+		        	dateSelection: {
+		                required: true
+		            },
 		        	serviceMasterId: {
 		                required: true
 		            }
@@ -126,6 +217,9 @@
 		        },
 		        // in 'messages' user have to specify message as per rules
 		        messages: {
+		        	dateSelection: {
+		                required: "Please Select Date"
+		            },
 		        	serviceMasterId: {
 		                required: "Please Select Service Type"
 		            }

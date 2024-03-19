@@ -48,4 +48,37 @@ public class ReportController {
 			@RequestParam(name = "dietSubTypeIds", required = false) String dietSubTypeIds) {
 		return exportService.patientServiceReportExport(model, type, patientServiceReport, dateSelection, diagonosisIds, dietTypeOralSolidIds, dietSubTypeIds);
 	}
+	
+	
+	@PostMapping("/sticker-service-report")
+	public String stickerServiceReport(Model model,
+			@RequestParam("dateSelection") String dateSelection,
+			@RequestParam("serviceMasterId") Long serviceMasterId) {
+		return reportService.stickerServiceReport(model, dateSelection, serviceMasterId);
+	}
+	
+	@PostMapping("/sticker-service-report-export")
+	public ResponseEntity<ByteArrayResource> stickerServiceReportExport(Model model,
+			@RequestParam(name = "type", required = true) String type,
+			@RequestParam("dateSelection") String dateSelection,
+			@RequestParam("serviceMasterId") Long serviceMasterId) {
+		return exportService.stickerServiceReportExport(model, type, dateSelection, serviceMasterId);
+	}
+	
+	@GetMapping("/sticker-service-comorbidity-report")
+	public String stickerServiceComorbidityReport(Model model,
+			@RequestParam("dateSelection") String dateSelection,
+			@RequestParam("serviceMasterId") Long serviceMasterId,
+			@RequestParam("itemName") String itemName) {
+		return reportService.stickerServiceComorbidityReport(model, dateSelection, serviceMasterId, itemName);
+	}
+	
+	@PostMapping("/sticker-service-comorbidity-report-export")
+	public ResponseEntity<ByteArrayResource> stickerServiceComorbidityReportExport(Model model,
+			@RequestParam(name = "type", required = true) String type,
+			@RequestParam("dateSelection") String dateSelection,
+			@RequestParam("serviceMasterId") Long serviceMasterId,
+			@RequestParam("itemName") String itemName) {
+		return exportService.stickerServiceComorbidityReportExport(model, type, dateSelection, serviceMasterId, itemName);
+	}	
 }

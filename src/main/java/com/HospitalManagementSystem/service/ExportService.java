@@ -29,5 +29,9 @@ public interface ExportService {
 
 	ResponseEntity<ByteArrayResource> getExcelMISAdhocOrderData(AdHocSearchDto adHocSearchDto);
 
+	ResponseEntity<ByteArrayResource> stickerServiceReportExport(Model model, String type, String dateSelection, Long serviceMasterId);
+
+	ResponseEntity<ByteArrayResource> stickerServiceComorbidityReportExport(Model model, String type, String dateSelection, Long serviceMasterId, String itemName);
+
 }
 	

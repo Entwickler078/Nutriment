@@ -194,6 +194,10 @@ public class Patient implements Serializable {
 		return medicalComorbiditiesString;
 	}
 	
+	public String getMedicalComorbiditiesString(CharSequence delimiter) {
+		return CollectionUtils.isNotEmpty(medicalComorbidities) ? medicalComorbidities.stream().map(x -> String.valueOf(x.getValue())).collect(Collectors.joining(delimiter)) : "";
+	}
+	
 	public String getDiagonosisString() {
 		this.setDiagonosisString(
 				StringUtils.isEmpty(diagonosisString) && CollectionUtils.isNotEmpty(diagonosis)
@@ -216,6 +220,11 @@ public class Patient implements Serializable {
 			}
 		}
 		return specialNotesByNursingString;
+	}
+	
+	public String getSpecialNotesByNursingString(CharSequence delimiter) {
+		String spString = getSpecialNotesByNursingString();
+		return StringUtils.isNotEmpty(spString) ? spString.replaceAll(", ", delimiter.toString()) : "";
 	}
 
 	public String getDietTypeSolidLiquidQuantityFrequencyString() {

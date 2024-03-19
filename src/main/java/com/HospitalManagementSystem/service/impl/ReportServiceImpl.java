@@ -2,7 +2,9 @@ package com.HospitalManagementSystem.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,11 +19,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.HospitalManagementSystem.dto.PatientServiceReportDto;
+import com.HospitalManagementSystem.dto.StickerServiceComorbidityReportDto;
+import com.HospitalManagementSystem.dto.StickerServiceReportDto;
+import com.HospitalManagementSystem.entity.DietPlan;
+import com.HospitalManagementSystem.entity.Patient;
 import com.HospitalManagementSystem.entity.master.Diagonosis;
 import com.HospitalManagementSystem.repository.DiagonosisRepository;
+import com.HospitalManagementSystem.repository.DietPlanRepository;
 import com.HospitalManagementSystem.repository.DietSubTypeRepository;
 import com.HospitalManagementSystem.repository.DietTypeOralSolidRepository;
+import com.HospitalManagementSystem.repository.ServiceMasterRepository;
 import com.HospitalManagementSystem.service.ReportService;
+import com.HospitalManagementSystem.service.StickersService;
 import com.HospitalManagementSystem.utility.CommonUtility;
 import com.HospitalManagementSystem.utility.ReportServiceUtility;
 
@@ -31,6 +40,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@PersistenceContext
 	EntityManager em;
+	
+	@Autowired
+	private StickersService stickersService;
 
 	@Autowired
 	private DietTypeOralSolidRepository dietTypeOralSolidRepository;
@@ -38,6 +50,10 @@ public class ReportServiceImpl implements ReportService {
 	private DietSubTypeRepository dietSubTypeRepository;
 	@Autowired
 	private DiagonosisRepository diagonosisRepository;
+	@Autowired
+	private DietPlanRepository dietPlanRepository;
+	@Autowired
+	private ServiceMasterRepository serviceMasterRepository;
 
 	@Override
 	public String patientServiceReport(Model model) {
@@ -164,6 +180,85 @@ public class ReportServiceImpl implements ReportService {
 		model.addAttribute("patientServiceReportList", patientServiceReportList);
 		model.addAttribute("patientServiceReport", patientServiceReport);
 		return patientServiceReport(model);
+	}
+
+	@Override
+	public String stickerServiceReport(Model model, String dateSelection, Long serviceMasterId) {
+		List<StickerServiceReportDto> stickerServiceReportList = new ArrayList<>();
+		boolean showItemName = stickersService.isDietTypeLiquidOralTF(serviceMasterId);
+		Query query = em.createNativeQuery(showItemName ? ReportServiceUtility.STICKER_SERVICE_REPORT_1 : ReportServiceUtility.STICKER_SERVICE_REPORT_2);
+		query.setParameter("dateSelection", LocalDate.parse(dateSelection, CommonUtility.localDateFormatter));
+		query.setParameter("serviceMasterId", serviceMasterId);
+		List<Object[]> list = query.getResultList();
+
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (Object[] object : list) {
+				StickerServiceReportDto stickerServiceReportDto = new StickerServiceReportDto();
+				stickerServiceReportDto.setDietType(ReportServiceUtility.getString(object[0]));
+				stickerServiceReportDto.setDietSubType(ReportServiceUtility.getString(object[1]));
+				stickerServiceReportDto.setItemName(ReportServiceUtility.getString(object[2]));
+				stickerServiceReportDto.setTotal(ReportServiceUtility.getString(object[3]));
+				stickerServiceReportList.add(stickerServiceReportDto);
+			}
+		}
+		model.addAttribute("stickerServiceReportList", stickerServiceReportList);
+		model.addAttribute("reportGenerated", true);
+		model.addAttribute("dateSelection", dateSelection);
+		model.addAttribute("serviceMasterId", serviceMasterId);
+		model.addAttribute("serviceMaster", serviceMasterRepository.getByServiceMasterId(serviceMasterId));
+		model.addAttribute("showItemName", showItemName);
+		return stickersService.stickers(model, null);
+	}
+
+	@Override
+	public String stickerServiceComorbidityReport(Model model, String dateSelection, Long serviceMasterId, String itemName) {
+		List<StickerServiceComorbidityReportDto> stickerServiceComorbidityReportList = new ArrayList<>();
+		Map<String, StickerServiceComorbidityReportDto> finalDataMap = new HashMap<>();
+		List<DietPlan> dietPlanList = new ArrayList<>();
+		LocalDate dietDate = LocalDate.parse(dateSelection, CommonUtility.localDateFormatter);
+		int total = 0;
+		if (StringUtils.isNotEmpty(itemName)) {
+			dietPlanList = dietPlanRepository.findAllByServiceMasterServiceMasterIdAndDietDateAndItem(serviceMasterId, dietDate, itemName);
+		} else {
+			dietPlanList = dietPlanRepository.findAllByServiceMasterServiceMasterIdAndDietDate(serviceMasterId, dietDate);
+		}
+
+		if (CollectionUtils.isNotEmpty(dietPlanList)) {
+			for (DietPlan dietPlan : dietPlanList) {
+				if (dietPlan.getIsPaused()) {
+					continue;
+				}
+				Patient patient = dietPlan.getPatient();
+				String medicalComorbiditiesString = patient.getMedicalComorbiditiesString(" + ");
+				String patientInfo = dietPlan.getPatient().getPatientName() + "|" + dietPlan.getPatient().getBed().getBedCode();
+				StickerServiceComorbidityReportDto stickerServiceComorbidityReportDto = null;
+				if (finalDataMap.containsKey(medicalComorbiditiesString)) {
+					stickerServiceComorbidityReportDto = finalDataMap.get(medicalComorbiditiesString);
+				} else {
+					stickerServiceComorbidityReportDto = new StickerServiceComorbidityReportDto();
+					stickerServiceComorbidityReportDto.setComorbidityValue(medicalComorbiditiesString);
+					finalDataMap.put(medicalComorbiditiesString, stickerServiceComorbidityReportDto);
+					stickerServiceComorbidityReportList.add(stickerServiceComorbidityReportDto);
+				}
+				stickerServiceComorbidityReportDto.setTotal(stickerServiceComorbidityReportDto.getTotal() + 1);
+				total++;
+				if (CollectionUtils.isNotEmpty(dietPlan.getDietInstructions())) {
+					stickerServiceComorbidityReportDto.getDietInstructions().add(patientInfo + "  :  " + dietPlan.getDietInstructions().stream().map(x -> String.valueOf(x.getInstruction())).collect(Collectors.joining(" | ")));
+				}
+				if (StringUtils.isNotEmpty(patient.getSpecialNotesByNursingString())) {
+					stickerServiceComorbidityReportDto.getNursingInstructions().add(patientInfo + "  :  " + patient.getSpecialNotesByNursingString(" | "));
+				}
+			}
+			StickerServiceComorbidityReportDto stickerServiceComorbidityReportDto = new StickerServiceComorbidityReportDto();
+			stickerServiceComorbidityReportDto.setComorbidityValue("Total");
+			stickerServiceComorbidityReportDto.setTotal(total);
+			stickerServiceComorbidityReportList.add(stickerServiceComorbidityReportDto);
+		}
+		model.addAttribute("stickerServiceComorbidityReportList", stickerServiceComorbidityReportList);
+		model.addAttribute("dateSelection", dateSelection);
+		model.addAttribute("serviceMaster", serviceMasterRepository.getByServiceMasterId(serviceMasterId));
+		model.addAttribute("itemName", itemName);
+		return "report/StickerServiceComorbidityReport";
 	}
 
 }

@@ -8,8 +8,10 @@ public interface StickersService {
 
 	String stickers(Model model, Long patientId);
 
-	ResponseEntity<Resource> generateStickers(Long serviceMasterId, Long patientId);
+	ResponseEntity<Resource> generateStickers(String dateSelection, Long serviceMasterId, Long patientId);
 
 	ResponseEntity<Resource> generateAdhocOrderStickers(Long adHocOrderId);
+
+	boolean isDietTypeLiquidOralTF(Long serviceMasterId);
 
 }

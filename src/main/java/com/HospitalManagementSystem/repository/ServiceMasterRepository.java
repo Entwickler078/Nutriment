@@ -11,4 +11,6 @@ public interface ServiceMasterRepository extends JpaRepository<ServiceMaster, Lo
 
 	List<ServiceMaster> findAllByIsActive(Boolean isActive);
 
+	ServiceMaster getByServiceMasterId(Long serviceMasterId);
+
 }
