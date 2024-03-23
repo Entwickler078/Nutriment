@@ -11,7 +11,7 @@
 		<!-- v4.0.0-alpha.6 -->
 		<link rel="stylesheet" href="${contextPath}/resources/dist/bootstrap/css/bootstrap.min.css">
 		<!-- Favicon -->
-		<link rel="icon" type="image/png" sizes="16x16" href="${contextPath}/resources/dist/img/favicon.ico">
+<%-- 		<link rel="icon" type="image/png" sizes="16x16" href="${contextPath}/resources/dist/img/favicon.ico"> --%>
 		<!-- Google Font -->
 		<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 		<!-- Theme style -->

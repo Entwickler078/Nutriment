@@ -103,7 +103,7 @@
 											<div class="row">
 												<div class="col-lg-6">
 													<fieldset class="form-group">
-														<input type="text" id="searchTextActive" class="form-control" placeholder="Search Patient name, UHID, IP Number and Doctor/Unit Name">
+														<input type="text" id="searchTextActive" class="form-control" placeholder="Search Patient name, UHID, IP Number, Doctor/Unit Name and Ward Name">
 													</fieldset>
 												</div>
 												<div class="col-lg-2">
@@ -219,7 +219,7 @@
 											<div class="row">
 												<div class="col-lg-6">
 													<fieldset class="form-group">
-														<input type="text" id="searchTextDischarged" class="form-control" placeholder="Search Patient name, UHID, IP Number and Doctor/Unit Name">
+														<input type="text" id="searchTextDischarged" class="form-control" placeholder="Search Patient name, UHID, IP Number, Doctor/Unit Name and Ward Name">
 													</fieldset>
 												</div>
 												<div class="col-lg-2">

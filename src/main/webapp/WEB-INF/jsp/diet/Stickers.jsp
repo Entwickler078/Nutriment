@@ -47,13 +47,13 @@
 								<input type="hidden" id="serviceMasterIdStr" value="${serviceMasterId}"></input>
 								<input type="hidden" name="type" id="type"></input>
 								<div class="row">
-									<c:if test="${empty patientId}">
 									<div class="col-lg-2">
 										<fieldset class="form-group">
 											<label for="medicalComorbidities">Date</label><span class="text-danger">*</span>
 											<input type="text" class="form-control daterange-single" id="dateSelection" name="dateSelection" placeholder="Date"></input>
 										</fieldset>
-									</div>										
+									</div>	
+									<c:if test="${empty patientId}">									
 									<div class="col-lg-4">
 										<fieldset class="form-group">
 											<label for="dietType">Diet Type</label><span class="text-danger">*</span>
@@ -76,8 +76,10 @@
 									</div>
 								</div>
 								<button type="submit" class="btn btn-success waves-effect waves-light" onclick="changeAction('1')">Generate Stickers</button>
-								<button type="submit" class="btn btn-success waves-effect waves-light" onclick="changeAction('2')">Generate Report</button>
-								<button type="submit" class="btn btn-outline-primary" onclick="changeAction('3')"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;PDF</button>								
+								<c:if test="${empty patientId}">
+									<button type="submit" class="btn btn-success waves-effect waves-light" onclick="changeAction('2')">Generate Report</button>
+									<button type="submit" class="btn btn-outline-primary" onclick="changeAction('3')"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;PDF</button>	
+								</c:if>							
 							</form>
 						</div>
 					</div>

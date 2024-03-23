@@ -456,7 +456,7 @@ public class PatientDetailsServiceImpl implements PatientDetailsService {
 		User currentUser = commonUtility.getCurrentUser();
 		DataTablesInput input = patientSearchDto;
 //		input.addColumn("bed.bedCode", true, true, null);
-//		input.addColumn("bed.wardName", true, true, null);
+		input.addColumn("bed.wardName", true, false, null);
 //		input.addColumn("bed.floor.floorName", true, true, null);
 		input.setSearch(new Search(patientSearchDto.getSearchText(), false));		
 		List<Order> orders = input.getOrder();

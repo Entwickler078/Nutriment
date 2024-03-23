@@ -156,6 +156,7 @@ public class DietPlanServiceImpl implements DietPlanService {
 	@Override
 	public PatientDataTablesOutputDto getDietPlanData(DietPlanSearchDto dietPlanSearchDto) {
 		DataTablesInput input = dietPlanSearchDto;
+		input.addColumn("bed.wardName", true, false, null);
 		input.setSearch(new Search(dietPlanSearchDto.getSearchText(), false));
 		LocalDate date = LocalDate.now();
 		if (StringUtils.isNotEmpty(dietPlanSearchDto.getDateSelection())) {

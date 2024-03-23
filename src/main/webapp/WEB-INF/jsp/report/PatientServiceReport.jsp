@@ -113,8 +113,6 @@
 		                                 <th>DD</th>
 		                                 <th>Renal</th>
 		                                 <th>SRD</th>
-		                                 <th>SFD</th>
-		                                 <th>FFD</th>
 		                                 <th>Total</th>     
 		                              </tr>		                              
 		                           </thead>
@@ -129,8 +127,6 @@
 											 <td>${patientServiceReport.dd}</td>
 											 <td>${patientServiceReport.renal}</td>
 											 <td>${patientServiceReport.srd}</td>
-											 <td>${patientServiceReport.sfd}</td>
-											 <td>${patientServiceReport.ffd}</td>
 											 <td>${patientServiceReport.total}</td>
 										 </tr>
 									</c:forEach>		                           
@@ -144,8 +140,6 @@
 											 <td>${patientServiceReport.dd}</td>
 											 <td>${patientServiceReport.renal}</td>
 											 <td>${patientServiceReport.srd}</td>
-											 <td>${patientServiceReport.sfd}</td>
-											 <td>${patientServiceReport.ffd}</td>
 											 <td>${patientServiceReport.total}</td>
 										 </tr>
 									</c:forEach>		  						   
