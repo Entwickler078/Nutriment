@@ -46,6 +46,8 @@
 	var isAdmin = ${isAdmin};
 	var	dietTypeSolid = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 	var	dietTypeLiquidOralTF = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'] ;
+	var extraLiquidServices = ['s_10amExtraLiq','s_2pmExtraLiq','s_6pmExtraLiq','s_10pmExtraLiq'];
+	var dietSubTypeServices = ['s_6am','s_7am','s_8am','s_9am','s_10am','s_11am','s_12pm','s_1pm','s_2pm','s_3pm','s_4pm','s_5pm','s_6pm','s_7pm','s_8pm','s_9pm','s_10pm','s_11pm','s_12am'];
 	var alphanumericWithSpeChar = new RegExp('^[a-zA-Z0-9.,\-\/"& ]*$');
 	var allowsChars = '.,-/"&'
 	var setIntervalTime = 1000 * 60 * 3;

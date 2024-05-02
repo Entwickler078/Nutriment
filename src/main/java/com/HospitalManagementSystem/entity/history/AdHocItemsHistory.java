@@ -1,4 +1,4 @@
-package com.HospitalManagementSystem.entity.master;
+package com.HospitalManagementSystem.entity.history;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,23 +12,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.HospitalManagementSystem.enums.YesNo;
-import com.HospitalManagementSystem.utility.MasterDataUtility;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Entity
-@Table(name = "adhoc_items")
+@Table(name = "adhoc_items_history")
 @Data
-public class AdHocItems implements Serializable {
+public class AdHocItemsHistory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long adHocItemsHistoryId;
+
 	private Long adHocItemsId;
 
 	private String itemName;
@@ -107,40 +104,20 @@ public class AdHocItems implements Serializable {
 
 	private Long modifiedUserHistoryId;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	private LocalDateTime historyCreatedOn;
+
+	private Long historyCreatedBy;
+
+	@Column(columnDefinition = "longtext")
 	private String medicalComorbiditiesString;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	@Column(columnDefinition = "longtext")
 	private String medicalComorbiditiesColumnNames;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	@Column(columnDefinition = "longtext")
 	private String dietTypeString;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	@Column(columnDefinition = "longtext")
 	private String dietTypesColumnNames;
-
-	public String getMedicalComorbiditiesString() {
-		this.setMedicalComorbiditiesString(StringUtils.isEmpty(medicalComorbiditiesString) ? MasterDataUtility.getMedicalComorbiditiesString(this) : medicalComorbiditiesString);
-		return medicalComorbiditiesString;
-	}
-
-	public String getMedicalComorbiditiesColumnNames() {
-		this.setMedicalComorbiditiesColumnNames(StringUtils.isEmpty(medicalComorbiditiesColumnNames) ? MasterDataUtility.getMedicalComorbiditiesColumnNames(this) : medicalComorbiditiesColumnNames);
-		return medicalComorbiditiesColumnNames;
-	}
-
-	public String getDietTypeString() {
-		this.setDietTypeString(StringUtils.isEmpty(dietTypeString) ? MasterDataUtility.getDietTypeString(this) : dietTypeString);
-		return dietTypeString;
-	}
-
-	public String getDietTypesColumnNames() {
-		this.setDietTypesColumnNames(StringUtils.isEmpty(dietTypesColumnNames) ? MasterDataUtility.getDietTypesColumnNames(this) : dietTypesColumnNames);
-		return dietTypesColumnNames;
-	}
 
 }

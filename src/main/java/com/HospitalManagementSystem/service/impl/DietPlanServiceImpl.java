@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.HospitalManagementSystem.dto.DietPlanSearchDto;
 import com.HospitalManagementSystem.dto.PatientDataTablesOutputDto;
-import com.HospitalManagementSystem.entity.AdHocOrder;
 import com.HospitalManagementSystem.entity.DietInstruction;
 import com.HospitalManagementSystem.entity.DietPlan;
 import com.HospitalManagementSystem.entity.Patient;
@@ -36,6 +35,7 @@ import com.HospitalManagementSystem.entity.User;
 import com.HospitalManagementSystem.entity.master.MedicalComorbidities;
 import com.HospitalManagementSystem.entity.master.ServiceItems;
 import com.HospitalManagementSystem.entity.master.ServiceMaster;
+import com.HospitalManagementSystem.enums.YesNo;
 import com.HospitalManagementSystem.repository.DietInstructionRepository;
 import com.HospitalManagementSystem.repository.DietPlanRepository;
 import com.HospitalManagementSystem.repository.PatientDataTablesRepository;
@@ -44,6 +44,7 @@ import com.HospitalManagementSystem.repository.ServiceMasterRepository;
 import com.HospitalManagementSystem.service.DietPlanService;
 import com.HospitalManagementSystem.utility.CommonUtility;
 import com.HospitalManagementSystem.utility.DietUtility;
+import com.HospitalManagementSystem.utility.MasterDataUtility;
 
 @Service
 public class DietPlanServiceImpl implements DietPlanService {
@@ -88,7 +89,7 @@ public class DietPlanServiceImpl implements DietPlanService {
 	public synchronized void prepareDietPlan(List<Patient> patientList, User currentUser, Boolean prepareAll) {
 		if (CollectionUtils.isNotEmpty(patientList)) {
 			LocalDateTime now = LocalDateTime.now();
-			Map<String, List<ServiceItems>> serviceItemsMap = dietUtility.getServiceItemsMap();
+			Map<String, List<ServiceItems>> serviceItemsMap = dietUtility.getServiceItemsMap(Collections.EMPTY_LIST);
 			List<DietPlan> previousDietPlanList = new ArrayList<>();
 			if (prepareAll) {
 				previousDietPlanList = dietPlanRepository.findAllByDietDate(now.toLocalDate());
@@ -210,7 +211,7 @@ public class DietPlanServiceImpl implements DietPlanService {
 			patientDataTablesOutputDto.setCount(patientList.size());
 			if (CollectionUtils.isNotEmpty(data.getData())) {
 				for (Patient patient : data.getData()) {
-					patient.setDietPlans(dietPlanRepository.findAllByPatientPatientIdAndDietDate(patient.getPatientId(), date));
+					patient.setDietPlans(dietPlanRepository.findAllByPatientPatientIdAndDietDateOrderByServiceMasterServiceMasterId(patient.getPatientId(), date));
 				}
 			}
 		} else {
@@ -312,6 +313,63 @@ public class DietPlanServiceImpl implements DietPlanService {
 						.collect(Collectors.toList()));
 			}
 			dietPlanRepository.saveAll(dietPlanList);
+		}
+	}
+
+	@Override
+	public void deleteDietPlanForServiceItem(ServiceItems serviceItems, LocalDateTime now) {
+		List<DietPlan> upcommingDietPlans = dietPlanRepository.findAllByServiceItemsServiceItemsIdAndDietDateAndServiceMasterFromTimeGreaterThan(serviceItems.getServiceItemsId(), now.toLocalDate(), now.toLocalTime());
+		if (CollectionUtils.isNotEmpty(upcommingDietPlans)) {
+			dietPlanRepository.deleteAll(upcommingDietPlans);
+		}
+		List<DietPlan> upcommingDietPlansForTomorrow = dietPlanRepository.findAllByServiceItemsServiceItemsIdAndDietDate(serviceItems.getServiceItemsId(), now.toLocalDate().plusDays(1));
+		if (CollectionUtils.isNotEmpty(upcommingDietPlansForTomorrow)) {
+			dietPlanRepository.deleteAll(upcommingDietPlansForTomorrow);
+		}
+	}
+
+	@Override
+	public void addDietPlanForServiceItem(ServiceItems serviceItems, LocalDateTime now, User currentUser) {
+		List<Patient> patientList = new ArrayList<Patient>();
+		if (serviceItems.getExtraLiquid().equals(YesNo.YES)) {
+			List<Patient> patientListTemp = patientRepository.findAllByPatientStatusAndExtraLiquid(1, Boolean.TRUE);
+			if (CollectionUtils.isNotEmpty(patientListTemp)) {
+				patientList.addAll(patientListTemp);
+			}
+		}
+		List<Patient> patientListTemp = patientRepository.findAllByPatientStatusAndDietSubTypeDietSubTypeIdIn(1,
+				MasterDataUtility.getDietTypesIdList(serviceItems));
+		if (CollectionUtils.isNotEmpty(patientListTemp)) {
+			patientList.addAll(patientListTemp);
+		}
+
+		List<String> serviceMasterColumnNamesList = List.of(MasterDataUtility.getServiceMasterColumnNames(serviceItems).split(","));
+		Map<String, List<ServiceItems>> serviceItemsMap = dietUtility.getServiceItemsMap(List.of(serviceItems));
+
+		for (Patient patient : patientList) {
+			List<DietPlan> dietPlanList = new ArrayList<>();
+			List<Long> impactedServiceMasterIdList = new ArrayList<>();
+			List<DietPlan> dietPlanListForTomorrow = new ArrayList<>();
+			List<DietInstruction> dietInstructionList = dietInstructionRepository.findAllByPatientPatientIdAndDietInstructionStatus(patient.getPatientId(), 1);
+			List<ServiceMaster> serviceMasterList = serviceMasterRepository.findAll(dietUtility.getServiceMasterSpecification(patient, Collections.EMPTY_LIST));
+			if (CollectionUtils.isNotEmpty(serviceMasterList)) {
+				for (ServiceMaster serviceMaster : serviceMasterList) {
+					if (ObjectUtils.isNotEmpty(serviceMaster.getServiceItemsColumnName()) && serviceMasterColumnNamesList.contains(serviceMaster.getServiceItemsColumnName())) {
+						impactedServiceMasterIdList.add(serviceMaster.getServiceMasterId());
+						Optional<DietPlan> previousDietPlan = Optional.empty();
+						if (serviceMaster.getFromTime().isAfter(now.toLocalTime())) {
+							dietPlanList.add(getDietPlan(patient, serviceMaster, dietInstructionList, now, now.toLocalDate(), serviceItemsMap, currentUser, previousDietPlan));
+						}
+						dietPlanListForTomorrow.add(getDietPlan(patient, serviceMaster, dietInstructionList, now, now.toLocalDate().plusDays(1), serviceItemsMap, currentUser, previousDietPlan));
+					}
+				}
+			}
+			dietPlanRepository.deleteAllByPatientPatientIdAndServiceMasterServiceMasterIdInAndDietDateAndServiceMasterFromTimeGreaterThan(patient.getPatientId(), impactedServiceMasterIdList, now.toLocalDate(), now.toLocalTime());
+			dietPlanRepository.deleteAllByPatientPatientIdAndServiceMasterServiceMasterIdInAndDietDate(patient.getPatientId(), impactedServiceMasterIdList, now.toLocalDate().plusDays(1));
+			dietPlanList.addAll(dietPlanListForTomorrow);
+			if (CollectionUtils.isNotEmpty(dietPlanList)) {
+				dietPlanRepository.saveAll(dietPlanList);
+			}
 		}
 	}
 }

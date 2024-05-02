@@ -129,11 +129,13 @@ public class DietUtility {
 		return specification;
 	}
 
-	public Map<String, List<ServiceItems>> getServiceItemsMap() {
+	public Map<String, List<ServiceItems>> getServiceItemsMap(List<ServiceItems> serviceItemsList) {
 		Map<String, List<ServiceItems>> serviceItemsMap = new HashMap<String, List<ServiceItems>>();
-		List<ServiceItems> ServiceItemsList = serviceItemsRepository.findAllByIsActive(true);
-		if (CollectionUtils.isNotEmpty(ServiceItemsList)) {
-			for (ServiceItems serviceItems : ServiceItemsList) {
+		if (CollectionUtils.isEmpty(serviceItemsList)) {
+			serviceItemsList = serviceItemsRepository.findAllByIsActive(true);
+		}
+		if (CollectionUtils.isNotEmpty(serviceItemsList)) {
+			for (ServiceItems serviceItems : serviceItemsList) {
 				if (serviceItems.getS_10amExtraLiq() == YesNo.YES) {
 					addIntoMap(serviceItems, serviceItemsMap, "s_10amExtraLiq", getSubKeys(serviceItems));
 				}
@@ -332,8 +334,8 @@ public class DietUtility {
 				// 2 Diabetic Diet (DD)
 				// 3 Renal
 				// 4 Hypertensive (Salt Restricted-SRD)
-				// 5 Salt Free
-				// 6 FAT Free
+				// 5 Salt Free (SFD)
+				// 6 FAT Free (FFD)
 				if (patient.getMedicalComorbidities().stream().filter(x -> x.getMedicalComorbiditiesId() == 1).findAny().isPresent()) {
 					predicates.add(criteriaBuilder.equal(root.get("normal"), YesNo.YES));
 				} 

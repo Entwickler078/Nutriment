@@ -36,7 +36,15 @@
 		            <li><a href="${contextPath}/reports/patient-service-report"><i class="fa fa-angle-right"></i> Diet MIS report</a></li>
 		          </ul>
 				</li>	
-			</c:if>						
+			</c:if>
+			<c:if test="${isAdmin}">
+				<li class="treeview menu-open" id="Masters"> <a href="#"> <i class="fa fa-database"></i> <span>Masters</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+		          <ul class="treeview-menu" style="display: block;">
+		            <li><a href="${contextPath}/master-data/adhoc-item-listing"><i class="fa fa-angle-right"></i> AdHoc Items</a></li>
+		            <li><a href="${contextPath}/master-data/service-item-listing"><i class="fa fa-angle-right"></i> Service Items</a></li>
+		          </ul>
+				</li>	
+			</c:if>										
 		</ul>
 	</div>
 	<!-- /.sidebar --> 

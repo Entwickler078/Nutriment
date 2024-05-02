@@ -26,10 +26,12 @@ public class DietSubType implements Serializable {
 	private String value;
 
 	private Boolean isActive = Boolean.FALSE;
-	
+
 	private LocalTime fromTime;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "diet_type_oral_liquid_tf_id")
 	private DietTypeOralLiquidTF dietTypeOralLiquidTF;
+
+	private String columnName;
 }

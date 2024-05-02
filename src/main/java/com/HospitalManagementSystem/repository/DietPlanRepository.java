@@ -16,6 +16,8 @@ public interface DietPlanRepository extends JpaRepository<DietPlan, Long>, JpaSp
 
 	List<DietPlan> findAllByPatientPatientIdAndDietDateAndServiceMasterFromTimeGreaterThan(Long patientId, LocalDate dietDate, LocalTime localTime);
 	
+	List<DietPlan> findAllByServiceItemsServiceItemsIdAndDietDateAndServiceMasterFromTimeGreaterThan(Long serviceItemsId, LocalDate localDate, LocalTime localTime);
+	
 	@Query("SELECT DISTINCT dietPlan.patient FROM DietPlan dietPlan WHERE dietPlan.dietDate = :dietDate")
 	List<Patient> findAllPatientsByDietDate(LocalDate dietDate);
 	
@@ -29,6 +31,10 @@ public interface DietPlanRepository extends JpaRepository<DietPlan, Long>, JpaSp
 	List<Patient> findAllPatientsByDietDateAndServiceMasterIds(LocalDate dietDate, List<Long> serviceMasterIds);
 
 	List<DietPlan> findAllByPatientPatientIdAndDietDate(Long patientId, LocalDate dietDate);
+	
+	List<DietPlan> findAllByPatientPatientIdAndDietDateOrderByServiceMasterServiceMasterId(Long patientId, LocalDate dietDate);
+	
+	List<DietPlan> findAllByServiceItemsServiceItemsIdAndDietDate(Long serviceItemsId, LocalDate plusDays);
 
 	List<DietPlan> findAllByServiceMasterServiceMasterId(Long serviceMasterId);
 
@@ -45,5 +51,9 @@ public interface DietPlanRepository extends JpaRepository<DietPlan, Long>, JpaSp
 	Optional<DietPlan> findByServiceMasterServiceMasterIdAndPatientPatientIdAndDietDate(Long serviceMasterId, Long patientId, LocalDate dietDate);
 
 	void deleteAllByPatientPatientId(Long patientId);
+
+	void deleteAllByPatientPatientIdAndServiceMasterServiceMasterIdInAndDietDateAndServiceMasterFromTimeGreaterThan(Long patientId, List<Long> impactedServiceMasterIdList, LocalDate localDate, LocalTime localTime);
+
+	void deleteAllByPatientPatientIdAndServiceMasterServiceMasterIdInAndDietDate(Long patientId, List<Long> impactedServiceMasterIdList, LocalDate plusDays);
 
 }

@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,9 +158,9 @@ public class StickersServiceImpl implements StickersService {
 						if (CollectionUtils.isNotEmpty(dietPlan.getServiceItems()) && dietPlan.getServiceItems().size() == 1
 								&& StringUtils.equalsAnyIgnoreCase(StringUtils.stripToEmpty(dietPlan.getItem()), StringUtils.stripToEmpty(dietPlan.getOriginalItem()))) {
 							ServiceItems serviceItems = dietPlan.getServiceItems().get(0);
-							if (ObjectUtils.isNotEmpty(dietPlan.getPatient().getQuantity()) && ObjectUtils.isNotEmpty(serviceItems.getCalories()) && ObjectUtils.isNotEmpty(serviceItems.getProtien())) {
+							if (ObjectUtils.isNotEmpty(dietPlan.getPatient().getQuantity()) && ObjectUtils.isNotEmpty(serviceItems.getCalories()) && ObjectUtils.isNotEmpty(serviceItems.getProtein())) {
 								BigDecimal multiplicand = new BigDecimal(dietPlan.getPatient().getQuantity().getValue() / 5);
-								proteinCalories = "P:" + serviceItems.getProtien().multiply(multiplicand).setScale(2, RoundingMode.HALF_EVEN) + " gms ";	
+								proteinCalories = "P:" + serviceItems.getProtein().multiply(multiplicand).setScale(2, RoundingMode.HALF_EVEN) + " gms ";	
 								proteinCalories += "C:" + serviceItems.getCalories().multiply(multiplicand).setScale(2, RoundingMode.HALF_EVEN) + " kcal " + PIPE;	
 							}
 						}

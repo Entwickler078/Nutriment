@@ -1,4 +1,4 @@
-package com.HospitalManagementSystem.entity.master;
+package com.HospitalManagementSystem.entity.history;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,20 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.HospitalManagementSystem.enums.YesNo;
-import com.HospitalManagementSystem.utility.MasterDataUtility;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Entity
-@Table(name = "service_items")
+@Table(name = "service_items_history")
 @Data
-public class ServiceItems implements Serializable {
+public class ServiceItemsHistory implements Serializable {
 
 	/**
 	 * 
@@ -34,6 +29,8 @@ public class ServiceItems implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long serviceItemsHistoryId;
+
 	private Long serviceItemsId;
 
 	private String itemName;
@@ -155,39 +152,20 @@ public class ServiceItems implements Serializable {
 
 	private Long modifiedUserHistoryId;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	private LocalDateTime historyCreatedOn;
+
+	private Long historyCreatedBy;
+
+	@Column(columnDefinition = "longtext")
 	private String dietTypeString;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	@Column(columnDefinition = "longtext")
 	private String dietTypesColumnNames;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	@Column(columnDefinition = "longtext")
 	private String serviceMasterString;
 
-	@Getter(lombok.AccessLevel.NONE)
-	@Transient
+	@Column(columnDefinition = "longtext")
 	private String serviceMasterColumnNames;
 
-	public String getDietTypeString() {
-		this.setDietTypeString(StringUtils.isEmpty(dietTypeString) ? MasterDataUtility.getDietTypeString(this) : dietTypeString);
-		return dietTypeString;
-	}
-
-	public String getDietTypesColumnNames() {
-		this.setDietTypesColumnNames(StringUtils.isEmpty(dietTypesColumnNames) ? MasterDataUtility.getDietTypesColumnNames(this) : dietTypesColumnNames);
-		return dietTypesColumnNames;
-	}
-
-	public String getServiceMasterString() {
-		this.setServiceMasterString(StringUtils.isEmpty(serviceMasterString) ? MasterDataUtility.getServiceMasterString(this) : serviceMasterString);
-		return serviceMasterString;
-	}
-
-	public String getServiceMasterColumnNames() {
-		this.setServiceMasterColumnNames(StringUtils.isEmpty(serviceMasterColumnNames) ? MasterDataUtility.getServiceMasterColumnNames(this) : serviceMasterColumnNames);
-		return serviceMasterColumnNames;
-	}
 }

@@ -21,4 +21,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 	void updatePatientData();
 
 	Integer countByPatientStatusAndBedFloorFloorId(Integer patientStatus, Long floorId);
+
+	List<Patient> findAllByPatientStatusAndExtraLiquid(Integer patientStatus, Boolean extraLiquid);
+
+	List<Patient> findAllByPatientStatusAndDietSubTypeDietSubTypeIdIn(Integer patientStatus, List<Long> dietSubTypeIdList);
 }

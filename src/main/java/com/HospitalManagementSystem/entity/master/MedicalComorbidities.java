@@ -22,4 +22,6 @@ public class MedicalComorbidities implements Serializable {
 	private String value;
 
 	private Boolean isActive = Boolean.FALSE;
+
+	private String columnName;
 }
